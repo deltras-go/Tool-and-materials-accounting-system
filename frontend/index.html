@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Учёт инструментов</title>
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<nav>
+  <div class="nav-brand">Учёт инструментов</div>
+  <div class="nav-links">
+    <a href="/" class="active">Главная</a>
+    <a href="/instruments">Инструменты</a>
+    <a href="/employees">Сотрудники</a>
+    <a href="/issues">Выдачи</a>
+  </div>
+</nav>
+
+<main>
+  <h1>Добро пожаловать</h1>
+  <p class="subtitle">Система учёта инструментов и материалов</p>
+
+  <div class="cards">
+    <a href="/instruments" class="card card-blue">
+      <div class="card-icon">&#9874;</div>
+      <div class="card-title">Инструменты</div>
+      <div class="card-sub">Добавление, редактирование, удаление</div>
+      <div class="card-count" id="cnt-instruments">—</div>
+    </a>
+    <a href="/employees" class="card card-teal">
+      <div class="card-icon">&#128100;</div>
+      <div class="card-title">Сотрудники</div>
+      <div class="card-sub">Реестр сотрудников предприятия</div>
+      <div class="card-count" id="cnt-employees">—</div>
+    </a>
+    <a href="/issues" class="card card-coral">
+      <div class="card-icon">&#128220;</div>
+      <div class="card-title">Выдачи</div>
+      <div class="card-sub">Учёт выдачи и возврата</div>
+      <div class="card-count" id="cnt-issues">—</div>
+    </a>
+  </div>
+</main>
+
+<script>
+async function loadCounts() {
+  const [instr, empl, iss] = await Promise.all([
+    fetch('/api/instruments').then(r=>r.json()),
+    fetch('/api/employees').then(r=>r.json()),
+    fetch('/api/issues').then(r=>r.json()),
+  ]);
+  document.getElementById('cnt-instruments').textContent = (instr||[]).length + ' шт.';
+  document.getElementById('cnt-employees').textContent   = (empl||[]).length + ' чел.';
+  document.getElementById('cnt-issues').textContent      = (iss||[]).length + ' записей';
+}
+loadCounts();
+</script>
+</body>
+</html>
